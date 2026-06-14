@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clean Analytics Debugger</title>
+  <meta name="description" content="Privacy-safe debugger for GA4, GTM, pixels, consent, dataLayer and server-side tracking.">
+  <style>
+    :root {
+      --bg: #04161b;
+      --card: rgba(7, 42, 49, 0.82);
+      --text: #ecfeff;
+      --muted: #a7d8dd;
+      --accent: #5cf0ce;
+      --accent2: #38d7ca;
+      --border: rgba(92, 240, 206, 0.28);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(92, 240, 206, 0.18), transparent 34%),
+        radial-gradient(circle at 90% 80%, rgba(56, 215, 202, 0.16), transparent 36%),
+        linear-gradient(135deg, #031116, #06252d 55%, #04161b);
+      min-height: 100vh;
+    }
+    .wrap {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 72px 0 42px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.32);
+      backdrop-filter: blur(12px);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(92, 240, 206, .45);
+      border-radius: 999px;
+      padding: 8px 13px;
+      color: #dffcff;
+      background: rgba(92, 240, 206, .08);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    h1 {
+      margin: 20px 0 14px;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: .95;
+      letter-spacing: -0.06em;
+    }
+    h1 span { color: var(--accent); display: block; }
+    p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    a.btn {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 15px;
+      font-weight: 800;
+      color: #032127;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 34px rgba(92, 240, 206, .22);
+    }
+    a.btn.secondary {
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+    .mock {
+      position: relative;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .mock-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); opacity: .8; }
+    .panel {
+      border: 1px solid var(--border);
+      background: rgba(3, 22, 29, .78);
+      border-radius: 22px;
+      padding: 18px;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+    .tab, .metric {
+      border: 1px solid rgba(92, 240, 206, .20);
+      background: rgba(92, 240, 206, .06);
+      border-radius: 14px;
+      padding: 10px;
+      color: #defcff;
+      font-size: 13px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .metric {
+      text-align: left;
+      margin-top: 10px;
+      padding: 14px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 34px;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .feature {
+      border: 1px solid var(--border);
+      background: rgba(7, 42, 49, 0.62);
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .feature h3 { margin: 0 0 8px; }
+    .feature p { font-size: 15px; }
+    footer {
+      margin-top: 42px;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--accent); }
+    @media (max-width: 820px) {
+      .hero, .features { grid-template-columns: 1fr; }
+      .wrap { padding-top: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <div class="badge">Privacy-safe tracking QA</div>
+        <h1>Clean Analytics <span>Debugger</span></h1>
+        <p>
+          Audit GA4, Google Tag Manager, pixels, consent signals, dataLayer pushes,
+          ecommerce events and server-side tracking evidence directly on the active website.
+        </p>
+        <div class="actions">
+          <a class="btn" href="privacy-policy.html">Privacy Policy</a>
+          <a class="btn secondary" href="mailto:redwan10.ag@gmail.com">Support</a>
+        </div>
+      </div>
+
+      <div class="card mock">
+        <div class="mock-top">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <div class="panel">
+          <strong>Final Verdict Dashboard</strong>
+          <div class="tabs">
+            <div class="tab">GA4</div>
+            <div class="tab">GTM</div>
+            <div class="tab">Pixels</div>
+            <div class="tab">Consent</div>
+            <div class="tab">dataLayer</div>
+            <div class="tab">sGTM</div>
+          </div>
+          <div class="metric">
+            <strong>Reload & Capture</strong>
+            Capture page-load tags, requests and dataLayer activity from the beginning.
+          </div>
+          <div class="metric">
+            <strong>Reports</strong>
+            Export client-ready findings with evidence and recommendations.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <article class="feature">
+        <h3>GA4, GTM & Pixel Detection</h3>
+        <p>Review observed analytics and advertising signals from the active website.</p>
+      </article>
+      <article class="feature">
+        <h3>DataLayer Console</h3>
+        <p>Search, inspect and export observed window.dataLayer pushes for QA.</p>
+      </article>
+      <article class="feature">
+        <h3>Consent & Cookie Diagnostics</h3>
+        <p>Inspect consent behavior and optional cookie signals in a privacy-safe workflow.</p>
+      </article>
+    </section>
+
+    <footer>
+      <span>© Clean Analytics Debugger</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="mailto:redwan10.ag@gmail.com">Support</a></span>
+    </footer>
+  </main>
+</body>
+</html>
